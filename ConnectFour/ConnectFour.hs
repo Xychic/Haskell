@@ -1,7 +1,6 @@
 import System.IO
 
 showBoard :: [[Char]] -> [Char]
--- showBoard [a,b,c,d,e,f] = a ++ "\n" ++ b ++ "\n" ++ c ++ "\n" ++ d ++ "\n" ++ e ++ "\n" ++ f
 showBoard [a,b,c,d,e,f] = " 0 1 2 3 4 5 6 \n" ++
     createRow a ++ "\n──┼─┼─┼─┼─┼─┼──\n" ++
     createRow b ++ "\n──┼─┼─┼─┼─┼─┼──\n" ++
@@ -25,7 +24,7 @@ checkWinner board =
         check1 :: [[Char]] -> Int -> Int -> Char
         check1 board x y 
             | board!!y!!x == board!!(y+1)!!(x+1) && board!!(y+1)!!(x+1) == board!!(y+2)!!(x+2) && board!!(y+2)!!(x+2) == board!!(y+3)!!(x+3) && board!!y!!x /= '.' = board!!y!!x
-            | board!!(y+3)!!x == board!!(y+2)!!(x+1) && board!!(y+2)!!(x+1) == board!!(y+1)!!(x+2) && board!!(y+1)!!(x+2) == board!!y!!(x+3) && board!!(y+3)!!x /= '.' = board!!y!!x
+            | board!!(y+3)!!x == board!!(y+2)!!(x+1) && board!!(y+2)!!(x+1) == board!!(y+1)!!(x+2) && board!!(y+1)!!(x+2) == board!!y!!(x+3) && board!!(y+3)!!x /= '.' = board!!(y+3)!!x
             | otherwise = '?'
 
         check2 :: [[Char]] -> Int -> Int -> Char
@@ -88,6 +87,7 @@ bestOf (x:xs)
 bestMove :: [[Char]] -> [[Char]]
 bestMove board = bestOf [play x y 'X' board | x <- [0..6], (valid, y) <- [(checkPlay board x ((length board)-1))], valid==True]
 
+
 replace :: Int -> a -> [a] -> [a]
 replace 0 a (x:xs) = a : xs
 replace n a (x:xs) = x : (replace (n-1) a xs)
@@ -143,46 +143,6 @@ emptyBoard = [
     ".......",
     "......."]
 
-testBoardVert = [
-    "X......",
-    "X......",
-    "X......",
-    "X......",
-    ".......",
-    "......."]
-
-testBoardHor = [
-    ".......",
-    ".......",
-    ".......",
-    ".......",
-    "OOO....",
-    "XXXX..."]
-
-testBoardDiag = [
-    ".......",
-    ".......",
-    "x......",
-    ".x.....",
-    "..x....",
-    "...x..."]
-
-testBoardTie = [
-    "abcdefg",
-    "gfe_bca",
-    "abcdefg",
-    "gfe_bca",
-    "abcdefg",
-    "gfe_bca"]
-
-testBoardClose = [
-    ".....XO",
-    "...XOOO",
-    "XOOXOXO",
-    "XOXOOXX",
-    "OOOXXXO",
-    "XXXOOOX"]
-
 showMany (x:xs) 
     | x == [] = ""
     | otherwise = (showBoard x) ++ "\n\n" ++ showMany xs
@@ -190,12 +150,3 @@ showMany (x:xs)
 main :: IO()
 main = do
     twoPlayer emptyBoard 'X'
-    -- print (value 'O' testBoardClose)
-    -- putStr "How many players (1, 2): "
-    -- hFlush stdout
-    -- input <- getLine
-    -- if input == "1" then onePlayer testBoardClose 'X'
-    -- else if input == "2" then twoPlayer emptyBoard 'O' 
-    -- else do 
-    --     putStrLn "Invalid input!\n"
-    --     main
